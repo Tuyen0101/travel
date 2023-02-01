@@ -1,0 +1,59 @@
+<main id="content" class="site-main">
+  <!-- Inner Banner html start-->
+  <section class="inner-banner-wrap">
+    <div class="inner-baner-container py-20" style="background-image: url(../../assets/images/inner-banner.jpg);">
+<!--      <div class="container">-->
+<!--        <div class="inner-banner-content">-->
+<!--          <h1 class="inner-title text-8xl font-bold">Thanh toán</h1>-->
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+    <div class="inner-shape"></div>
+  </section>
+  <!-- Inner Banner html end-->
+  <!-- contact form html start -->
+  <div class="col-lg-4">
+    <aside class="sidebar">
+      <div class="widget-bg widget-table-summary">
+        <h4 class="bg-title">Tổng tiền</h4>
+        <table class="table">
+          <tbody>
+          <tr>
+            <td>Khách hàng</td>
+            <td>Giá tiền / 1 người</td>
+            <td>Số người</td>
+            <td>Tổng tiền</td>
+          </tr>
+          <tr>
+            <td>Người lớn</td>
+            <td>{{tour?.tour.priceAdult | number: '1.0-0'}}đ</td>
+            <td>{{tour?.numberAdult}}</td>
+            <td>{{tour?.numberAdult * tour?.tour.priceAdult | number: '1.0-0'}}đ</td>
+          </tr>
+          <tr>
+            <td>Trẻ em</td>
+            <td>{{tour?.tour.priceChildren | number: '1.0-0'}}đ</td>
+            <td>{{tour?.numberChildren}}</td>
+            <td>{{tour?.numberChildren * tour?.tour.priceChildren | number: '1.0-0'}}đ</td>
+          </tr>
+          <tr>
+            <td>Trẻ sơ sinh</td>
+            <td>{{tour?.tour.priceInfant | number: '1.0-0'}}đ</td>
+            <td>{{tour?.numberInfant}}</td>
+            <td>{{tour?.numberInfant * tour?.tour.priceInfant | number: '1.0-0'}}đ</td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="font-bold text-xl">Tổng tiền: {{tour?.totalMoney | number: '1.0-0'}}đ</div>
+      </div>
+      <button
+        type="submit"
+        class="inline-block px-7 py-3 bg-red-400 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 ansition duration-150 ease-in-out w-full"
+
+      >
+        Đặt Tour
+      </button>
+    </aside>
+  </div>
+  <!-- contact form html end -->
+</main>

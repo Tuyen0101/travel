@@ -1,0 +1,205 @@
+<div class="dashboard-box table-opp-color-box">
+  <h4 class="mb-2 text-xl">Danh sách Tour</h4>
+  <div class="trip-search-section shape-search-section mt-20">
+    <div class="slider-shape"></div>
+    <div class="container">
+     <form [formGroup]="filterForm">
+       <div class="trip-search-inner white-bg d-flex">
+         <div class="input-group">
+            <label> Địa điểm </label>
+            <input formControlName="keyword" type="text" name="s" placeholder="Nhập địa điểm bạn muốn đến">
+         </div>
+         <div class="input-group">
+            <label> Giá thấp nhất </label>
+            <input formControlName="fromprice" type="text" name="s" placeholder="Nhập giá tiền Min">
+         </div>
+         <div class="input-group">
+           <label> Giá cao nhất </label>
+           <input formControlName="toprice" type="text" name="s" placeholder="Nhập giá tiền Max">
+        </div>
+         <div class="input-group width-col-3">
+            <label> Ngày khởi hành </label>
+            <input formControlName="fromdate" type="date" name="size" placeholder="fromdate">
+         </div>
+         <div class="input-group width-col-3">
+            <label> Ngày kết thúc</label>
+            <input formControlName="todate" type="date" name="size" placeholder="todate">
+         </div>
+           <button
+             type="submit"
+             class="inline-block mt-2 px-7 py-3 bg-red-400 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 ansition duration-150 ease-in-out w-full"
+             (click)="filterTour()"
+           >
+             Tìm kiếm
+           </button>
+      </div>
+     </form>
+    </div>
+ </div>
+  <div class="form-group mb-4">
+    <select (change)="sortTour($event)">
+      <option value="1">Không sắp xếp</option>
+      <option value="2">Sắp xếp theo tên</option>
+      <option value="3">Sắp xếp theo Giá tiền từ thấp đến cao</option>
+      <option value="4">Sắp xếp theo Giá tiền từ cao đến thấp</option>
+      <option value="5">Sắp xếp theo Ngày khởi hành</option>
+    </select>
+  </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Tên Tour</th>
+          <th>Thời gian đi</th>
+          <th>Thời gian về</th>
+          <th>Giá Tour</th>
+          <th>Kiểu Tour</th>
+          <th>Xem chi tiết</th>
+          <th>Sửa</th>
+          <th>Xóa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of tours">
+          <td>
+            <span class="package-name font-bold">{{item.tourName}}</span>
+          </td>
+          <td>{{item.startDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{item.endDate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{item.priceAdult | number:'1.0-0'}}đ</td>
+          <td>{{item.typeTourId === 1 ? 'Tour ẩm thực' : item.typeTourId === 2 ? 'Tour tham quan' : 'Tour du lịch xanh'}}</td>
+          <td (click)="getTourById(item.tourId)">
+            <button type="button"
+              class="focus:outline-none"
+              data-bs-toggle="modal" data-bs-target="#exampleModalXl">
+              <span class="badge badge-success cursor-pointer"><i class="far fa-eye"></i></span>
+            </button>
+          </td>
+          <td (click)="editTour(item.tourId)">
+            <span class="badge badge-success cursor-pointer"><i class="far fa-edit"></i></span>
+          </td>
+          <td (click)="deleteTour(item.tourId)">
+            <span class="badge badge-danger cursor-pointer"><i class="far fa-trash-alt"></i></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade fixed top-20 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalXl" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-xl relative w-auto pointer-events-none">
+    <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+      <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+        <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalXlLabel">
+          {{data?.tour?.tourName}} ({{data?.tour?.startDate | date: 'dd/MM/yyyy'}} - {{data?.tour?.endDate | date: 'dd/MM/yyyy'}})
+        </h5>
+        <button type="button"
+          class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+          data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body relative p-4 flex gap-10">
+        <div class="w-3/5">
+          <div class="font-bold">Mô tả</div>
+          <p [innerHTML]="data?.tour?.description"></p>
+          <div class="font-bold mt-2">Lộ trình</div>
+          <p [innerHTML]="data?.tour?.schedule"></p>
+          <div class="font-bold mt-2">Giá tiền</div>
+          <p>Giá người lớn: {{data?.tour?.priceAdult | number:'1.0-0'}}</p>
+          <p>Giá trẻ em: {{data?.tour?.priceChildren | number:'1.0-0'}}</p>
+          <p>Giá trẻ sơ sinh: {{data?.tour?.priceInfant | number:'1.0-0'}}</p>
+        </div>
+        <div class="w-2/5">
+          <div class="font-bold mb-2">Ảnh tour</div>
+          <div id="carouselExampleIndicators" class="carousel slide relative" data-bs-ride="carousel">
+            <div class="carousel-indicators absolute right-0 bottom-0 left-0 flex justify-center p-0 mb-4">
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Slide 1"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="1"
+                aria-label="Slide 2"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="2"
+                aria-label="Slide 3"
+              ></button>
+            </div>
+            <div class="carousel-inner relative w-full overflow-hidden">
+              <div class="carousel-item active float-left w-full">
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp"
+                  class="block w-full h-44"
+                  alt="Wild Landscape"
+                />
+              </div>
+              <div class="carousel-item float-left w-full">
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp"
+                  class="block w-full h-44"
+                  alt="Camera"
+                />
+              </div>
+              <div class="carousel-item float-left w-full">
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/new/slides/043.webp"
+                  class="block w-full h-44"
+                  alt="Exotic Fruits"
+                />
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline left-0"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev"
+            >
+              <span class="carousel-control-prev-icon inline-block bg-no-repeat" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline right-0"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next"
+            >
+              <span class="carousel-control-next-icon inline-block bg-no-repeat" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          <div class="font-bold my-2">Địa chỉ</div>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235442.87008700846!2d104.85895313190044!3d22.772993615341093!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x36cd416833ee9ad5%3A0xe1f42da2bbc76727!2zdHQuIFNhIFBhLCBTYSBQYSwgTMOgbyBDYWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1667809449377!5m2!1svi!2s" height="450px" frameborder="0"></iframe>
+        </div>
+      </div>
+      <div
+        class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+        <button type="button"
+          class="inline-block px-6 py-2.5 bg-red-400 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out"
+          data-bs-dismiss="modal">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pagination-wrap">
+  <nav class="pagination-inner">
+    <ul class="pagination disabled">
+      <li class="page-item"><span class="page-link"><i class="fas fa-chevron-left"></i></span></li>
+      <li class="page-item"><a href="#" class="page-link active">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a></li>
+    </ul>
+  </nav>
+</div>
+

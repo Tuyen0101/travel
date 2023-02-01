@@ -1,0 +1,104 @@
+<div [formGroup]="tourForm" class="row">
+  <!-- Listings -->
+  <div class="col-lg-8 col-xl-9">
+    <div class="dashboard-box">
+      <div class="custom-field-wrap">
+        <div class="form-group">
+          <label>Tên</label>
+          <input formControlName="tourName" type="text" placeholder="Tên">
+        </div>
+        <div class="form-group">
+          <label>Mô tả</label>
+          <textarea class="text-sm px-1" formControlName="description" placeholder="Mô tả"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Lộ trình</label>
+          <textarea class="text-sm px-1" formControlName="schedule" placeholder="Lộ trình"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-box">
+      <div class="custom-field-wrap">
+        <h4>Thời gian</h4>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>Thời gian đi</label>
+              <input formControlName="startDate" type="date" name="size" placeholder="startDate">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>Thời gian về</label>
+              <input formControlName="endDate" type="date" name="size" placeholder="endDate">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-box">
+      <h4>Images</h4>
+      <div class="custom-field-wrap">
+        <div class="dragable-field">
+          <div class="dragable-field-inner">
+            <div class="upload-input">
+              <div class="form-group">
+                <span class="upload-btn">Upload a image</span>
+                <input formControlName="urlImage" type="file" name="myfile" multiple="multiple">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="dashboard-box">
+      <h4>Địa điểm</h4>
+      <div class="custom-field-wrap">
+        <div class="form-group">
+          <select formControlName="location">
+            <option>Chọn vị trí</option>
+          </select>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <div class="col-lg-4 col-xl-3">
+    <div class="dashboard-box">
+      <h4>Giá tiền</h4>
+      <div class="custom-field-wrap">
+        <div class="form-group">
+          <label>người lớn</label>
+          <input formControlName="priceAdult" placeholder="Giá người lớn" type="text" name="name">
+        </div>
+        <div class="form-group">
+          <label>Trẻ em</label>
+          <input formControlName="priceChildren" placeholder="Giá trẻ em" type="text" name="name">
+        </div>
+        <div class="form-group">
+          <label>Trẻ sơ sinh</label>
+          <input formControlName="priceInfant" placeholder="Giá trẻ sơ sinh" type="text" name="name">
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-box">
+      <h4>Loại Tour</h4>
+      <div class="custom-field-wrap mt-2">
+        <div class="form-group">
+          <select formControlName="typeTourId">
+            <option value="1">Tour ẩm thực</option>
+            <option value="2">Tour tham quan</option>
+            <option value="3">Tour du lịch xanh</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    type="submit"
+    class="inline-block px-7 py-3 bg-red-400 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 ansition duration-150 ease-in-out w-full"
+    (click)="editTour()"
+  >
+    Chỉnh sửa Tour
+  </button>
+</div>
+

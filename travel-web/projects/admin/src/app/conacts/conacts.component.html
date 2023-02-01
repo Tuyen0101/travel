@@ -1,0 +1,21 @@
+<div class="dashboard-box">
+  <!-- post comment html -->
+  <div class="comment-area">
+    <div class="comment-area-inner">
+      <ol *ngFor="let item of contacts">
+        <li>
+          <figure class="comment-thumb">
+            <img src="../../assets/images/{{item.avatar[0].avatar}}" alt="">
+          </figure>
+          <div class="comment-content">
+            <div class="comment-header">
+              <h4 class="author-name">{{item.name[0].firstName}} {{item.name[0].lastName}}</h4>
+              <span class="post-on">{{item.createdAt | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <p [innerHTML]="item.content"></p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>

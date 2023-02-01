@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="dashboard-box table-opp-color-box">
+      <h4 class="mb-2 text-xl">Danh sách Khách hàng</h4>
+      <div class="flex gap-10 mb-2">
+          <div class="form-group relative">
+            <input [formControl]="inpurForm" type="text" class="form-control" id="search" placeholder="Tìm kiếm theo tên">
+            <div (click)="searchCustomer()"><span class="search_btn cursor-pointer absolute right-3 top-3.5"><i class="fa fa-search" aria-hidden="true"></i></span></div>
+          </div>
+          <div class="form-group w-40">
+            <select (change)="sortCustomer()" [formControl]="selectForm">
+              <option value="1">Không sắp xếp</option>
+              <option value="2">Sắp xếp theo tên</option>
+            </select>
+          </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Họ tên</th>
+              <th>Số điện thoại</th>
+              <th>Email</th>
+              <th>Địa chỉ</th>
+              <th>Năm sinh</th>
+              <th>Giới tính</th>
+              <!-- <th>Xem chi tiết</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of users">
+              <td><span class="list-img"><img src="../../assets/images/{{item.account[0].avatar}}" alt=""></span>
+              </td>
+              <td><a href="#"><span class="list-name">{{item.firstName}} {{item.lastName}}</span></a>
+              </td>
+              <td>{{item.phone}}</td>
+              <td>{{item?.account[0].email}}</td>
+              <td>{{item.address}}</td>
+              <td>{{item.dob | date: 'dd/MM/yyyy'}}</td>
+              <td>{{item.gender === 0 ? 'Nữ' : 'Nam'}}</td>
+              <!-- <td>
+                <span class="badge badge-success cursor-pointer"><i class="far fa-eye"></i></span>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

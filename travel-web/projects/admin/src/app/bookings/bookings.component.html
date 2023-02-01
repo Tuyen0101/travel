@@ -1,0 +1,171 @@
+<div class="dashboard-box table-opp-color-box">
+  <h4 class="mb-2 text-xl">Booking</h4>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Ngày Đặt</th>
+          <th>Trạng thái</th>
+          <th>Tên Tour</th>
+          <th>Tổng tiền</th>
+          <th>Xem chi tiết</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of bookings">
+          <td>
+            <span class="list-img"><img src="../../assets/images/{{item.avatar[0].avatar}}" alt="">
+            </span><span class="list-enq-name">{{item.name[0].firstName}} {{item.name[0].lastName}}</span>
+          </td>
+          <td>{{item.bookingTime}}</td>
+          <td>{{item.status === 1 ? 'Thành công' : 'Thất bại'}}</td>
+          <td>{{item?.tourName[0]?.tourName ? item?.tourName[0]?.tourName : 'Mộc Châu'}}</td>
+          <td>{{item.totalPrice | number:'1.0-0'}}</td>
+          <td (click)="getBookingById(item.bookingId)">
+            <button type="button"
+              class="focus:outline-none"
+              data-bs-toggle="modal" data-bs-target="#exampleModalXl">
+              <span class="badge badge-success cursor-pointer"><i class="far fa-eye"></i></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade fixed top-20 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalXl" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-xl relative w-auto pointer-events-none">
+    <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+      <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+        <div class="text-xl font-medium leading-normal text-gray-800 flex justify-center" id="exampleModalXlLabel">
+          <p class="font-bold">Thông tin chi tiết Booking</p>
+        </div>
+        <button type="button"
+          class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+          data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body relative p-4 flex gap-10 justify-center">
+        <div>
+          <div class="flex w-full justify-between gap-20">
+            <div class="w-full">
+                <h3 class="font-bold">Thông tin khách hàng</h3>
+                <table class="table">
+                   <tbody>
+                      <tr>
+                         <td>Họ</td>
+                         <td>{{profile?.lastName}}</td>
+                      </tr>
+                      <tr>
+                         <td>Tên</td>
+                         <td>{{profile?.firstName}}</td>
+                      </tr>
+                      <tr>
+                         <td>Email</td>
+                         <td>{{account?.email}}</td>
+                      </tr>
+                      <tr>
+                         <td>Số điện thoại</td>
+                         <td>{{profile?.phone}}</td>
+                      </tr>
+                      <tr>
+                         <td>Địa chỉ</td>
+                         <td>{{profile?.address}}</td>
+                      </tr>
+                      <tr>
+                         <td>Năm sinh</td>
+                         <td>{{profile?.dob | date: 'dd/MM/yyyy'}}</td>
+                      </tr>
+                   </tbody>
+                </table>
+            </div>
+            <div class="w-full">
+                <h3 class="font-bold">Thông tin Tour</h3>
+                <table class="table">
+                   <tbody>
+                      <tr>
+                         <td>TourId</td>
+                         <td>{{tour?.tourId}}</td>
+                      </tr>
+                      <tr>
+                         <td>Tên Tour</td>
+                         <td>{{tour?.tourName}}</td>
+                      </tr>
+                      <tr>
+                         <td>Ngày khởi hành</td>
+                         <td>{{tour?.startDate | date: 'dd/MM/yyyy'}}</td>
+                      </tr>
+                      <tr>
+                         <td>Ngày về</td>
+                         <td>{{tour?.endDate | date: 'dd/MM/yyyy'}}</td>
+                      </tr>
+                      <tr>
+                         <td>Loại tour</td>
+                         <td>{{tour?.typeTourId === 1 ? 'Tour ẩm thực' : tour?.typeTourId === 2 ? 'Tour tham quan' : 'Tour du lịch xanh'}}</td>
+                      </tr>
+                      <tr>
+                         <td>Số người lớn / Tổng giá</td>
+                         <td>{{tour?.numberAdult}} người / {{bookingDetail?.numberAdult * tour?.priceAdult | number: '1.0-0'}}đ</td>
+                      </tr>
+                      <tr>
+                       <td>Số trẻ em / Tổng giá</td>
+                       <td>{{tour?.numberChildren}} người / {{bookingDetail?.numberChildren * tour?.priceChildren | number: '1.0-0'}}đ</td>
+                      </tr>
+                      <tr>
+                         <td>Số trẻ sơ sinh / Tổng giá</td>
+                         <td>{{tour?.numberInfant ? bookingDetail?.numberInfant : '0'}} người / {{bookingDetail?.numberInfant * tour?.priceInfant | number: '1.0-0'}}đ</td>
+                      </tr>
+                      <tr>
+                       <!-- <td>Thanh toán</td>
+                       <td>{{tour?.paymentId === 1 ? 'momo' : tour?.paymentId === 2 ? 'viettelpay' : tour?.paymentId === 3 ? 'bank' :'visa'}}</td> -->
+                    </tr>
+                   </tbody>
+                </table>
+            </div>
+          </div>
+          <div class="widget-bg widget-table-summary">
+                <h4 class="bg-title font-bold">Tổng tiền</h4>
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td>Khách hàng</td>
+                      <td>Giá tiền / 1 người</td>
+                      <td>Số người</td>
+                      <td>Tổng tiền</td>
+                    </tr>
+                    <tr>
+                      <td>Người lớn</td>
+                      <td>{{tour?.priceAdult | number: '1.0-0'}}đ</td>
+                      <td>{{bookingDetail?.numberAdult}}</td>
+                      <td>{{bookingDetail?.numberAdult * tour?.priceAdult | number: '1.0-0'}}đ</td>
+                    </tr>
+                    <tr>
+                      <td>Trẻ em</td>
+                      <td>{{tour?.priceChildren | number: '1.0-0'}}đ</td>
+                      <td>{{bookingDetail?.numberChildren}}</td>
+                      <td>{{bookingDetail?.numberChildren * tour?.priceChildren | number: '1.0-0'}}đ</td>
+                    </tr>
+                    <tr>
+                      <td>Trẻ sơ sinh</td>
+                      <td>{{tour?.priceInfant | number: '1.0-0'}}đ</td>
+                      <td>{{bookingDetail?.numberInfant}}</td>
+                      <td>{{bookingDetail?.numberInfant * tour?.priceInfant | number: '1.0-0'}}đ</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="font-bold text-xl">Tổng tiền: {{booking?.totalPrice | number: '1.0-0'}}đ</div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+        <button type="button"
+          class="inline-block px-6 py-2.5 bg-red-400 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out"
+          data-bs-dismiss="modal">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

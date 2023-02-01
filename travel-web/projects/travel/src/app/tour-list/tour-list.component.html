@@ -1,0 +1,188 @@
+<div id="page" class="full-page">
+  <main id="content" class="site-main">
+     <!-- Inner Banner html start-->
+     <section class="inner-banner-wrap">
+        <div class="inner-baner-container" style="background-image: url(../../assets/images/inner-banner.jpg);">
+           <div class="container">
+              <div class="inner-banner-content">
+                <h1 class="inner-title text-8xl font-bold">Tour Du lịch</h1>
+              </div>
+           </div>
+        </div>
+        <div class="inner-shape"></div>
+     </section>
+     <!-- Inner Banner html end-->
+     <!-- packages html start -->
+     <div class="package-section">
+        <div class="container">
+           <div class="package-inner">
+              <div class="row">
+                 <div *ngFor="let item of data" class="col-lg-4 col-md-6">
+                    <div class="package-wrap">
+                       <figure class="feature-image">
+                          <a href="#">
+                             <img class="h-60" src="../../assets/images/{{item.image[0].urlImage}}" alt="">
+                          </a>
+                       </figure>
+                       <div class="package-price">
+                          <h6>
+                             <span>{{item.priceAdult | number : '1.0-0'}} </span> / người
+                          </h6>
+                       </div>
+                       <div class="package-content-wrap">
+                          <div class="package-meta text-center">
+                             <ul>
+                                <li>
+                                   <i class="far fa-clock"></i>
+                                   {{item.startDate | date: 'dd/MM/yyyy'}}
+                                </li>
+                                <li>
+                                   <i class="far fa-clock"></i>
+                                   {{item.endDate | date: 'dd/MM/yyyy'}}
+                                </li>
+                                <li>
+                                   <i class="fas fa-map-marker-alt"></i>
+                                   {{item.tourName}}
+                                </li>
+                             </ul>
+                          </div>
+                          <div class="package-content">
+                             <p class="h-48 overflow-hidden">{{item.description}}</p>
+                             <div class="btn-wrap">
+                                <a href="#" routerLink="/detail/{{item.tourId}}" class="button-text width-6">Xem thêm<i class="fas fa-arrow-right"></i></a>
+                                <a href="#" class="button-text width-6">Ưu thích<i class="far fa-heart"></i></a>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+     <!-- packages html end -->
+     <!-- Home activity section html start -->
+     <section class="activity-section">
+      <div class="container">
+         <div class="section-heading text-center">
+            <div class="row">
+               <div class="col-lg-8 offset-lg-2">
+                  <h5 class="dash-style">DU LỊCH THEO HOẠT ĐỘNG</h5>
+                  <h2>CUỘC PHIÊU LƯU & HOẠT ĐỘNG</h2>
+               </div>
+            </div>
+         </div>
+         <div class="activity-inner row">
+            <div class="col-lg-2 col-md-4 col-sm-6">
+               <div class="activity-item">
+                  <div class="activity-icon">
+                     <a href="#">
+                        <img src="../assets/images/icon6.png" alt="">
+                     </a>
+                  </div>
+                  <div class="activity-content">
+                     <h4>
+                        <a href="#">Cuộc phiêu lưu</a>
+                     </h4>
+                     <p>15 Điểm đến</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+               <div class="activity-item">
+                  <div class="activity-icon">
+                     <a href="#">
+                        <img src="../assets/images/icon10.png" alt="">
+                     </a>
+                  </div>
+                  <div class="activity-content">
+                     <h4>
+                        <a href="#">Đi bộ</a>
+                     </h4>
+                     <p>12 Điểm đến</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+               <div class="activity-item">
+                  <div class="activity-icon">
+                     <a href="#">
+                        <img src="../assets/images/icon9.png" alt="">
+                     </a>
+                  </div>
+                  <div class="activity-content">
+                     <h4>
+                        <a href="#">Lửa trại</a>
+                     </h4>
+                     <p>7 Điểm đến</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+               <div class="activity-item">
+                  <div class="activity-icon">
+                     <a href="#">
+                        <img src="../assets/images/icon8.png" alt="">
+                     </a>
+                  </div>
+                  <div class="activity-content">
+                     <h4>
+                        <a href="#">Ngoài đường</a>
+                     </h4>
+                     <p>15 Điểm đến</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+               <div class="activity-item">
+                  <div class="activity-icon">
+                     <a href="#">
+                        <img src="../assets/images/icon7.png" alt="">
+                     </a>
+                  </div>
+                  <div class="activity-content">
+                     <h4>
+                        <a href="#">Cắm trại</a>
+                     </h4>
+                     <p>13 Điểm đến</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+               <div class="activity-item">
+                  <div class="activity-icon">
+                     <a href="#">
+                        <img src="../assets/images/icon11.png" alt="">
+                     </a>
+                  </div>
+                  <div class="activity-content">
+                     <h4>
+                        <a href="#">Khám phá</a>
+                     </h4>
+                     <p>25 Điểm đến</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+     <!-- activity html end -->
+  </main>
+  <a id="backTotop" href="#" class="to-top-icon">
+     <i class="fas fa-chevron-up"></i>
+  </a>
+  <!-- custom search field html -->
+  <div class="header-search-form">
+     <div class="container">
+        <div class="header-search-container">
+           <form class="search-form" role="search" method="get" >
+              <input type="text" name="s" placeholder="Enter your text...">
+           </form>
+           <a href="#" class="search-close">
+              <i class="fas fa-times"></i>
+           </a>
+        </div>
+     </div>
+  </div>
+  <!-- header html end -->
+</div>

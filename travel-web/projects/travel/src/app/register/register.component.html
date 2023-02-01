@@ -1,0 +1,37 @@
+<div class="login-page" style="background-image: url(../../assets/images/bg.jpg);">
+  <div class="login-from-wrap">
+    <form class="login-from">
+      <h1 class="site-title mb-4">
+        <img src="../../assets/images/logo.png" alt="">
+      </h1>
+      <span>Nếu bạn đã có tài khoản. <span [routerLink]="'/login'" class="text-blue-500 cursor-pointer">Đăng nhập</span></span>
+      <form [formGroup]="registerForm" class="mt-2">
+        <div *ngFor="let item of InputForms" class="mb-6">
+          <input
+            [type]="item.type"
+            [formControlName]="item.formControlName"
+            class="form-control block w-full px-4 py-2 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:outline-none"
+            [placeholder]="item.placeholder"
+          />
+        </div>
+
+        <!-- <select formControlName="gender" class="form-select mb-3 appearance-none block w-full px-4 py-2
+          font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:outline-none">
+          <option value="1">Nam</option>
+          <option value="0">Nữ</option>
+        </select> -->
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+          (click)="submitRegister()"
+        >
+          Đăng ký
+        </button>
+      </form>
+    </form>
+  </div>
+</div>
+
+

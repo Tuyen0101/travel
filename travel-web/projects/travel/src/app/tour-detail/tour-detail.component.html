@@ -1,0 +1,303 @@
+<main id="content" class="site-main">
+
+  <section class="inner-banner-wrap">
+    <div class="inner-baner-container" style="background-image: url(../../assets/images/inner-banner.jpg);">
+      <div class="container">
+        <div class="inner-banner-content">
+          <h1 class="inner-title text-8xl font-bold">Chi tiết Tour</h1>
+        </div>
+      </div>
+    </div>
+    <div class="inner-shape"></div>
+  </section>
+
+  <div class="single-tour-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="single-tour-inner">
+            <figure class="feature-image">
+              <img src="../../assets/images/{{data?.images[0].urlImage}}" alt="">
+              <div class="package-meta text-center">
+                <ul>
+                  <li>
+                    <i class="far fa-clock"></i>
+                    {{data?.tour.startDate | date: 'dd/MM/yyyy'}}
+                  </li>
+                  <li>
+                    <i class="far fa-clock"></i>
+                    {{data?.tour.endDate | date: 'dd/MM/yyyy'}}
+                  </li>
+                  <li>
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{data?.tour.tourName}}
+                  </li>
+                </ul>
+              </div>
+            </figure>
+            <div class="tab-container">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab"
+                    aria-controls="overview" aria-selected="true">Mô tả</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="program-tab" data-toggle="tab" href="#program" role="tab"
+                    aria-controls="program" aria-selected="false">Lịch trình</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review"
+                    aria-selected="false">Đánh giá</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="map-tab" data-toggle="tab" href="#map" role="tab" aria-controls="map"
+                    aria-selected="false">Bản đồ</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                  <div class="overview-content">
+                    {{data?.tour.description}}
+                  </div>
+                </div>
+                <div class="tab-pane" id="program" role="tabpanel" aria-labelledby="program-tab">
+                  <div [innerHTML]="schema" class="itinerary-content"></div>
+                </div>
+                <div class="tab-pane" id="review" role="tabpanel" aria-labelledby="review-tab">
+                  <div class="summary-review">
+                    <div class="review-score">
+                      <span>{{reviews?.length}}</span>
+                    </div>
+                    <div class="review-score-content">
+                      <h3>
+                        <span>Đánh giá</span>
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="comment-area">
+                    <div class="comment-area-inner">
+                      <ol *ngFor="let item of reviews">
+                        <li>
+                          <figure class="comment-thumb">
+                            <img src="../../assets/images/{{item.avatar[0].avatar}}" alt="">
+                          </figure>
+                          <div class="comment-content">
+                            <div class="comment-header">
+                              <div class="flex justify-between">
+                                <div calss="flex">
+                                  <h5 class="author-name">{{item.name[0].firstName}} {{item.name[0].lastName}}</h5>
+                                  <span class="post-on">{{item.createdAt | date: 'dd/MM/yyyy'}}</span>
+                                </div>
+                                <div *ngIf="item.customerId == customerId" class="flex">
+                                  <div (click)="selectUpdateReview(item)" class="cursor-pointer mr-6 font-bold">Sửa</div>
+                                  <div (click)="deleteReview(item.reviewId)" class="cursor-pointer font-bold">Xóa</div>
+                                </div>
+                              </div>
+                              <div class="rating">
+                                <i *ngFor="let in of counter(item.rating) ;let i = index" class="fa fa-star text-yellow-400" aria-hidden="true"></i>
+                              </div>
+                            </div>
+                            <p class="font-bold">{{item.title}}</p>
+                            <p [innerHTML]="item.content"></p>
+                          </div>
+                        </li>
+                      </ol>
+                    </div>
+                    <div class="comment-form-wrap">
+                      <div *ngIf="!isLogin;else review">
+                        <p class="text-center font-bold">Vui lòng đăng nhập để được đánh giá</p>
+                      </div>
+                      <ng-template #review>
+                        <h3 class="comment-title">Gửi đánh giá</h3>
+                        <form [formGroup]="reviewForm" class="comment-form">
+                          <div class="full-width rate-wrap">
+                            <label>đánh giá số sao của bạn</label>
+                            <div class="rating cursor-pointer">
+                              <i (click)="selectRating(i)" [ngClass]="i <= rating ? 'text-yellow-400' : 'text-gray-400'" *ngFor="let in of counter(5) ;let i = index" class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                            <!-- <div class="procduct-rate">
+                              <span></span>
+                            </div> -->
+                          </div>
+                          <p>
+                            <input formControlName="title" type="text" name="name" placeholder="Tiêu đề">
+                          </p>
+                          <p class="my-4">
+                            <textarea formControlName="content" class="px-2" rows="6" placeholder="Nội dung"></textarea>
+                          </p>
+                          <button
+                            *ngIf="mode === 'create'"
+                            type="submit"
+                            class="inline-block px-7 py-3 bg-red-400 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 ansition duration-150 ease-in-out w-full"
+                            (click)="createReview()"
+                          >
+                            Đánh giá
+                          </button>
+                          <button
+                            *ngIf="mode === 'update'"
+                            type="submit"
+                            class="inline-block px-7 py-3 bg-red-400 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 ansition duration-150 ease-in-out w-full"
+                            (click)="updateReview()"
+                          >
+                            Sửa đánh giá
+                          </button>
+                        </form>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="map" role="tabpanel" aria-labelledby="map-tab">
+                  <div class="map-area">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235442.87008700846!2d104.85895313190044!3d22.772993615341093!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x36cd416833ee9ad5%3A0xe1f42da2bbc76727!2zdHQuIFNhIFBhLCBTYSBQYSwgTMOgbyBDYWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1667809449377!5m2!1svi!2s" height="450px" frameborder="0"></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="single-tour-gallery">
+              <div id="carouselExampleCaptions" class="carousel slide relative" data-bs-ride="carousel">
+                <div class="carousel-indicators absolute right-0 bottom-0 left-0 flex justify-center p-0 mb-4">
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide-to="0"
+                    class="active"
+                    aria-current="true"
+                    aria-label="Slide 1"
+                  ></button>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide-to="1"
+                    aria-label="Slide 2"
+                  ></button>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide-to="2"
+                    aria-label="Slide 3"
+                  ></button>
+                </div>
+                <div class="carousel-inner relative w-full overflow-hidden">
+                  <div class="carousel-item active relative float-left w-full">
+                    <img
+                      src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg"
+                      class="block w-full"
+                      alt="..."
+                    />
+                  </div>
+                  <div class="carousel-item relative float-left w-full">
+                    <img
+                      src="https://mdbootstrap.com/img/Photos/Slides/img%20(22).jpg"
+                      class="block w-full"
+                      alt="..."
+                    />
+                  </div>
+                  <div class="carousel-item relative float-left w-full">
+                    <img
+                      src="https://mdbootstrap.com/img/Photos/Slides/img%20(23).jpg"
+                      class="block w-full"
+                      alt="..."
+                    />
+                  </div>
+                </div>
+                <button
+                  class="carousel-control-prev absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline left-0"
+                  type="button"
+                  data-bs-target="#carouselExampleCaptions"
+                  data-bs-slide="prev"
+                >
+                  <span class="carousel-control-prev-icon inline-block bg-no-repeat" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button
+                  class="carousel-control-next absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline right-0"
+                  type="button"
+                  data-bs-target="#carouselExampleCaptions"
+                  data-bs-slide="next"
+                >
+                  <span class="carousel-control-next-icon inline-block bg-no-repeat" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="sidebar">
+            <div class="package-price">
+              <h5 class="price">
+                <span>{{data?.tour.priceAdult | number:"1.0-0"}}</span> / người
+              </h5>
+              <!-- <div class="start-wrap">
+                       <div class="rating-start" title="Rated 5 out of 5">
+                          <span style="width: 60%"></span>
+                       </div>
+                    </div> -->
+            </div>
+            <div class="widget-bg booking-form-wrap">
+              <h4 class="bg-title">Đặt tour</h4>
+              <div *ngIf="!isLogin;else login">
+                <p class="text-center font-bold">Vui lòng đăng nhập để đặt Tour</p>
+              </div>
+              <ng-template #login>
+                <form [formGroup]="bookingForm" class="booking-form">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <input formControlName="numberAdult" name="name_booking" type="text" placeholder="Số người lớn">
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <input formControlName="numberChildren" name="email_booking" type="text" placeholder="Số trẻ nhỏ">
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <input formControlName="numberInfant" name="phone_booking" type="text" placeholder="Số trẻ sơ sinh">
+                      </div>
+                    </div>
+                    <div class="col-sm-12 mb-2">
+                      <h4 class="">Chọn loại phòng</h4>
+                    </div>
+                    <div *ngFor="let item of typeRooms" class="col-sm-6">
+                      <div class="form-group">
+                        <label (click)="selectValueTyperoom(item.typeRoomId)" class="checkbox-list">
+                          <input type="radio" name="typeroom">
+                          <span class="custom-checkbox"></span>
+                          {{item.title}}
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 mb-2">
+                      <h4 class="">Chọn phương thức thanh toán</h4>
+                    </div>
+                    <div *ngFor="let item of payments" class="col-sm-6">
+                      <div class="form-group">
+                        <label (click)="selectValuePayment(item.paymentId)" class="checkbox-list">
+                          <input type="radio" name="payment">
+                          <span class="custom-checkbox"></span>
+                          {{item.title}}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <button
+                        (click)="submitBooking()"
+                        type="submit"
+                        class="inline-block px-7 py-3 bg-red-400 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg0 focus:shadow-lg focus:outline-none focus:ring-0 ansition duration-150 ease-in-out w-full"
+                      >
+                        Đặt tour
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,183 @@
+<div class="row mb-4">
+
+  <!-- Item -->
+  <div class="col-xl-3 col-sm-6">
+    <div class="db-info-list">
+      <div class="dashboard-stat-icon bg-blue">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="dashboard-stat-content">
+        <h4>Tổng doanh thu</h4>
+        <div>{{count.totalMoney | number: '1.0-0'}}đ</div>
+      </div>
+    </div>
+  </div>
+  <!-- Item -->
+  <div class="col-xl-3 col-sm-6">
+    <div class="db-info-list">
+      <div class="dashboard-stat-icon bg-green">
+        <i class="fas fa-ticket-alt"></i>
+      </div>
+      <div class="dashboard-stat-content">
+        <h4>Hóa đơn</h4>
+        <div>{{count.countBooking}}</div>
+      </div>
+    </div>
+  </div>
+  <!-- Item -->
+  <div class="col-xl-3 col-sm-6">
+    <div class="db-info-list">
+      <div class="dashboard-stat-icon bg-purple">
+        <i class="fas fa-umbrella-beach"></i>
+      </div>
+      <div class="dashboard-stat-content">
+        <h4>Tour</h4>
+        <div>{{count.countTour}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-sm-6">
+    <div class="db-info-list">
+      <div class="dashboard-stat-icon bg-red">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="dashboard-stat-content">
+        <h4>Khách hàng</h4>
+        <div>{{count.countUser}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-stat-content bg-white mb-4">
+  <h4 class="font-bold">Biểu đồ</h4>
+  <div class="grid grid-cols-12 gap-10">
+    <div id="chart1" class="col-span-6">
+      <apx-chart
+        [series]="chartTurnoverOptions?.series"
+        [chart]="chartTurnoverOptions?.chart"
+        [dataLabels]="chartTurnoverOptions?.dataLabels"
+        [plotOptions]="chartTurnoverOptions?.plotOptions"
+        [yaxis]="chartTurnoverOptions?.yaxis"
+        [xaxis]="chartTurnoverOptions?.xaxis"
+        [fill]="chartTurnoverOptions?.fill"
+        [title]="chartTurnoverOptions?.title"
+      ></apx-chart>
+      <p class="font-bold text-sm text-center -mt-2">Thống kê doanh thu theo tháng</p>
+    </div>
+    <div id="chart" class="col-span-6">
+      <apx-chart
+        [series]="chartCustomerOptions.series"
+        [chart]="chartCustomerOptions.chart"
+        [xaxis]="chartCustomerOptions.xaxis"
+        [stroke]="chartCustomerOptions.stroke"
+        [dataLabels]="chartCustomerOptions.dataLabels"
+        [yaxis]="chartCustomerOptions.yaxis"
+        [labels]="chartCustomerOptions.labels"
+        [legend]="chartCustomerOptions.legend"
+        [title]="chartCustomerOptions.title"
+        [subtitle]="chartCustomerOptions.subtitle"
+      ></apx-chart>
+      <p class="font-bold text-sm text-center -mt-2">Thống kê khách hàng theo tháng</p>
+    </div>
+
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="dashboard-box table-opp-color-box">
+      <h4>Đặt lịch gần đây</h4>
+      <div class="table-responsive mt-2">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Avatar</th>
+              <th>Tên</th>
+              <th>Ngày đặt</th>
+              <th>Địa chỉ</th>
+              <th>Tổng tiền</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of bookings">
+              <td><span class="list-img"><img src="../../assets/images/{{item.avatar[0].avatar}}" alt=""></span>
+              </td>
+              <td><span class="list-enq-name">{{item.name[0].firstName}} {{item.name[0].lastName}}</span>
+              </td>
+              <td>{{item.bookingTime}}</td>
+              <td>{{item?.tourName[0]?.tourName ? item?.tourName[0]?.tourName : 'Mộc Châu'}}</td>
+              <td>{{item.totalPrice | number:'1.0-0'}}</td>
+              <td>
+                {{item.status === 1 ? 'Thành công' : 'Thất bại'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="dashboard-box table-opp-color-box">
+      <h4>Tour mới nhất</h4>
+      <div class="table-responsive mt-2">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Tên Tour</th>
+              <th>Thời gian đi</th>
+              <th>Thời gian về</th>
+              <th>Loại tour</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tour of tours">
+              <td><span class="list-enq-name">{{tour.tourName}}</span>
+              </td>
+              <td>{{tour.startDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{tour.endDate | date: 'dd/MM/yyyy'}}</td>
+              <td>
+                {{tour.typeTourId === 1 ? 'Tour ẩm thực' : tour.typeTourId === 2 ? 'Tour tham quan' : 'Tour du lịch xanh'}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="dashboard-box">
+      <h4>Khách hàng mới</h4>
+      <div class="table-responsive mt-2">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Họ tên</th>
+              <th>Số điện thoại</th>
+              <th>Email</th>
+              <th>Địa chỉ</th>
+              <th>Năm sinh</th>
+              <th>Giới tính</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of customers">
+              <td><span class="list-img"><img src="../../assets/images/{{item.account[0].avatar}}" alt=""></span>
+              </td>
+              <td><a href="#"><span class="list-name">{{item.firstName}} {{item.lastName}}</span></a>
+              </td>
+              <td>{{item.phone}}</td>
+              <td>{{item?.account[0].email}}</td>
+              <td>{{item.address}}</td>
+              <td>{{item.dob | date: 'dd/MM/yyyy'}}</td>
+              <td>{{item.gender === 0 ? 'Nữ' : 'Nam'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
